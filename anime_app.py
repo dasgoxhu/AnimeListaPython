@@ -24,12 +24,16 @@ class AnimeApp:
         tk.Button(root, image=self.borrar_icon, width=40, height=40, pady=10, padx=5,
                   command=lambda: self.on_button_click(self.borrar_icon)).grid(row=6, column=3)
 
-        app_name_label2 = tk.Label(root, text="Lista Animes", font=("Arial", 10), bg="black", fg="white")
+        app_name_label2 = tk.Label(root, text="Lista Animes:", font=("Arial", 10), bg="black", fg="white")
         app_name_label2.grid(row=8, column=0, columnspan=4, pady=10)
-        self.animes_listbox = tk.Listbox(root, width=40, height=8, font=('Arial', 12))
+        self.animes_listbox = tk.Listbox(root, width=40, height=8, font=('Arial', 12), justify='center')
         self.animes_listbox.grid(row=9, column=0, columnspan=4, pady=10)
         app_name_label2 = tk.Label(root, text="By Dasgoxhu", font=("Arial", 10), bg="black", fg="white")
         app_name_label2.grid(row=10, column=0, columnspan=4, pady=(10, 0))
+
+        self.anime_count = len(self.manager.load_animes())
+        self.count_label = tk.Label(root, text=f"Cantidad de Animes en la lista: {self.anime_count}", font=("Arial", 10), bg="black", fg="white")
+        self.count_label.grid(row=7, column=0, columnspan=4, pady=10)
 
     def on_button_click(self, button):
         if button == self.guardar_icon:
@@ -40,6 +44,8 @@ class AnimeApp:
                 self.manager.save_anime(anime)
                 self.entry.delete(0, tk.END)
                 self.display_animes()
+                self.anime_count += 1
+                self.update_count_label()
                 messagebox.showinfo("Guardado", "Anime guardado con éxito.")
         elif button == self.limpiar_icon:
             self.entry.delete(0, tk.END)
@@ -69,7 +75,12 @@ class AnimeApp:
             self.manager.delete_anime(selected_index)
             self.display_animes()
             self.entry.delete(0, tk.END)
+            self.anime_count -= 1
+            self.update_count_label()
             messagebox.showinfo("Borrado", "Anime borrado con éxito.")
+
+    def update_count_label(self):
+        self.count_label.config(text=f"Cantidad de Animes: {self.anime_count}")
 
     def display_animes(self):
         self.animes_listbox.delete(0, tk.END)

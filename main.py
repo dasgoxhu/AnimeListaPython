@@ -37,7 +37,7 @@ if __name__ == '__main__':
     root = tk.Tk()
     root.overrideredirect(True)
     window_width = 365
-    window_height = 540
+    window_height = 590
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width - window_width) // 2
